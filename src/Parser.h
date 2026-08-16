@@ -44,7 +44,7 @@ class NetlistParser{
 
         }
         
-        Node* get_or_create_node(string &name, GateType type){
+        Node* get_or_create_node(string &name, GateType type, uint64_t delay = 1){
             auto it = node_map.find(name);
             if(it != node_map.end()){
                 return it->second;
@@ -81,7 +81,7 @@ class NetlistParser{
                 if(command == "INPUT"){
                     string input_name;
                     while(ss >> input_name){
-                        get_or_create_node(input_name, GateType::INPUT);
+                        get_or_create_node(input_name, GateType::INPUT, 0);
                     }
                 }
                 else if(command == "OUTPUT"){
@@ -105,7 +105,8 @@ class NetlistParser{
                         cerr<<"Syntax error on line "<<line_no<<": Missing output pin."<<endl;
                         return false;
                     }
-                    Node* node = get_or_create_node(out_pin, type);
+                    uint64_t gate_delay = (type == GateType::XOR) ? 3 : 2;
+                    Node* node = get_or_create_node(out_pin, type, gate_delay);
 
                     string in_pin;
                     while(ss >> in_pin){

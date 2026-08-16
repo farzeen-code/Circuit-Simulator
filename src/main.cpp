@@ -3,28 +3,14 @@
 #include "MemoryPool.h"
 #include "GraphEngine.h"
 #include "Parser.h"
+#include "EventSimulator.h"
 using namespace std;
 
-void run_test(NetlistParser& parser, circuitGraph& circuit, bool a, bool b, bool cin){
-
-    parser.set_inputs("A", a);
-    parser.set_inputs("B", b);
-    parser.set_inputs("Cin", cin);
-
-    circuit.evaluate();
-
-    const auto& nodes = parser.get_nodes();
-    bool sum = nodes.at("SUM")->value;
-    bool cout_val = nodes.at("COUT")->value;
-
-    cout << "  " << a << " | " << b << " |  " << cin 
-         << "  ||  " << sum << "  |   " << cout_val << "\n";
-};
 
 int main(){
 
     cout<<"==================================\n";
-    cout<<"Digital Logic Circuit Simulator\n";
+    cout<<"Event-Driven Logic Circuit Simulator (DES)\n";
     cout<<"==================================\n\n";
 
     fixedPoolAllocator<Node> pool;
@@ -38,25 +24,24 @@ int main(){
         return 1;
     }
 
-    if(!circuit.compile()){
-        cout<<"Error: Cycle detected in circuit."<<endl;
-        return 1;
+    const auto& nodes = parser.get_nodes();
+
+    cout<<"\nCircuit Connectivity check:"<<endl;
+    for(const auto& pair : nodes){
+        cout<<"Node ["<<pair.first<<"] has: "<<endl
+            <<pair.second->inputs.size()<<" inputs"<<endl
+            <<pair.second->outputs.size()<<" outputs"<<endl;
     }
+    EventSimulator sim;
 
-    cout<<"\nCircuit compiled successfully!"<<endl;
+    sim.schedule_event(0, nodes.at("A"), true);
+    sim.schedule_event(15, nodes.at("B"), true);
+    sim.schedule_event(30, nodes.at("Cin"), true);
 
-    cout << "--- 1-Bit Full Adder Truth Table ---\n";
-    cout << "  A | B | Cin || SUM | COUT\n";
-    cout << "----+---+-----++-----+-----\n";
+    
 
-    run_test(parser, circuit, 0, 0, 0);
-    run_test(parser, circuit, 0, 0, 1);
-    run_test(parser, circuit, 0, 1, 0);
-    run_test(parser, circuit, 0, 1, 1);
-    run_test(parser, circuit, 1, 0, 0);
-    run_test(parser, circuit, 1, 0, 1);
-    run_test(parser, circuit, 1, 1, 0);
-    run_test(parser, circuit, 1, 1, 1);
+    // Run the simulation across the time domain
+    sim.run(60);
   
     for (const auto& pair : parser.get_nodes()){
         pool.deallocate(pair.second);
@@ -66,3 +51,5 @@ int main(){
     return 0;
 
 }
+
+
