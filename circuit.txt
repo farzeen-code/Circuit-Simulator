@@ -1,0 +1,13 @@
+# 1-Bit Full Adder Netlist
+INPUT A B Cin
+
+# Sum calculation: (A XOR B) XOR Cin
+XOR S1 A B
+XOR SUM S1 Cin
+
+# Carry calculation: (A AND B) OR (Cin AND S1)
+AND C1 A B
+AND C2 Cin S1
+OR  COUT C1 C2
+
+OUTPUT SUM COUT

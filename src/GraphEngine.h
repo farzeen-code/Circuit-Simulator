@@ -1,5 +1,5 @@
 #pragma once
-#include<Node.h>
+#include "Node.h"
 #include<iostream>
 #include<queue>
 #include<unordered_map>
@@ -54,10 +54,20 @@ class circuitGraph{
 
         void evaluate(){
             for(Node* node : evaluation_order){
+
+                // Input nodes are set externally.
                 if(node->type == GateType::INPUT) continue;
                 
                 bool result = false;
                 switch(node->type){
+
+                    case GateType::OUTPUT: {
+                        if(!node->inputs.empty()) result = node->inputs[0]->value;
+                        else result = node->value;
+                        break;
+        
+                    }
+
                     case GateType::AND: {
                         result = true;
                         for(auto* i : node->inputs) result &= i->value;
@@ -90,7 +100,7 @@ class circuitGraph{
                     }
 
                     case GateType::XOR: {
-                        result = true;
+                        result = false;
                         for(auto* i : node->inputs) result ^= i->value;
                         break; 
                     }
@@ -105,7 +115,9 @@ class circuitGraph{
         void display() const {
             cout<<"\n\n Circuit Evaluation Results:\n\n";
             for(const auto* node : evaluation_order){
-                cout<<"Node: "<<node->name<<" = "<<(node->value ? "1" : "0")<<endl<<endl;
+                cout<<"Node: "<<node->name<<endl
+                <<"Node Type: "<<static_cast<int>(node->type)<<endl
+                <<"Node Value: "<<(node->value ? "1" : "0")<<endl<<"\n";
             }
         }
 };
