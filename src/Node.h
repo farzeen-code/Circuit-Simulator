@@ -13,7 +13,9 @@ enum class GateType{
     NOT,
     NAND,
     NOR,
-    XOR 
+    XOR,
+    DFF,
+    CLOCK 
 };
 
 struct Node{
@@ -21,6 +23,7 @@ struct Node{
     GateType type;
     bool value{false};
     uint64_t propagation_delay{1};
+    bool prev_clk_value{false};
 
     vector<Node*> inputs;
     vector<Node*> outputs;

@@ -1,0 +1,8 @@
+# 1-Bit D Flip-Flop Register
+# Syntax: DFF <output_Q> <data_D> <clock_CLK>
+INPUT D
+CLOCK CLK
+
+DFF Q D CLK
+
+OUTPUT Q

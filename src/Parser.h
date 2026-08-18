@@ -40,6 +40,8 @@ class NetlistParser{
             else if(upper == "NAND") return GateType::NAND;
             else if(upper == "NOR") return GateType::NOR;
             else if(upper == "XOR") return GateType::XOR;
+            else if(upper == "DFF") return GateType::DFF;
+            else if(upper == "CLOCK") return GateType::CLOCK;
             else throw runtime_error("Unknown gate type: " + str);
 
         }
@@ -78,10 +80,11 @@ class NetlistParser{
                 string command = first_token;
                 transform(command.begin(), command.end(), command.begin(), ::toupper);
 
-                if(command == "INPUT"){
+                if(command == "INPUT" || command == "CLOCK"){
+                    GateType in_type = (command == "CLOCK") ? GateType::CLOCK : GateType::INPUT;
                     string input_name;
                     while(ss >> input_name){
-                        get_or_create_node(input_name, GateType::INPUT, 0);
+                        get_or_create_node(input_name, in_type, 0);
                     }
                 }
                 else if(command == "OUTPUT"){

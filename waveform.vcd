@@ -1,0 +1,54 @@
+$date
+  August 2026
+$end
+$version
+  Custom C++ Discrete Event Simulator
+$end
+$timescale 1ns $end
+$scope module top $end
+$var wire 1 ! Q $end
+$var wire 1 " CLK $end
+$var wire 1 # D $end
+$upscope $end
+$enddefinitions $end
+$dumpvars
+0! 
+0" 
+0# 
+$end
+#0
+0"
+
+#3
+1#
+
+#5
+1"
+
+#6
+1!
+
+#10
+0"
+
+#12
+0#
+
+#15
+1"
+
+#16
+0!
+
+#20
+0"
+
+#25
+1"
+
+#30
+0"
+
+#35
+1"
+
