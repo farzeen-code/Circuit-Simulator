@@ -5,6 +5,7 @@
 #include "Parser.h"
 #include "EventSimulator.h"
 #include "VcdWriter.h"
+
 using namespace std;
 
 
@@ -18,7 +19,7 @@ int main(){
     circuitGraph circuit;
     NetlistParser parser(pool, circuit);
 
-    string filename = "dff_circuit.txt";
+    string filename = "hazard_circuit.txt";
     cout<<"Loading circuit from file: "<<filename<<endl;
     if(!parser.load_file(filename)){
         cout<<"Failed to load circuit file.\n\n";
@@ -42,15 +43,18 @@ int main(){
 
     EventSimulator sim;
     sim.set_vcd_writer(&vcd);
+    sim.set_glitch_threshold(2); // Flag any pulse <= 2ns
 
-    sim.register_clock(nodes.at("CLK"), 5);
+    // Initial setup: A=1, B=1, C=1 (F evaluates to 1)
+    sim.schedule_event(0, nodes.at("A"), true);
+    sim.schedule_event(0, nodes.at("B"), true);
+    sim.schedule_event(0, nodes.at("C"), true);
 
-    sim.schedule_event(3, nodes.at("D"), true);
-    sim.schedule_event(12, nodes.at("D"), false);
+    // At T=10ns, flip A from 1 -> 0 while B=1, C=1
+    // The inverter delay causes G1 to drop before G2 rises, creating a 1ns dip on F
+    sim.schedule_event(10, nodes.at("A"), false);
 
-    sim.run(40);
-    
-    cout<<"Waveform dump written to '"<<vcd_path<<"' \n";
+    sim.run(25);
   
     for (const auto& pair : parser.get_nodes()){
         pool.deallocate(pair.second);

@@ -24,6 +24,7 @@ struct Node{
     bool value{false};
     uint64_t propagation_delay{1};
     bool prev_clk_value{false};
+    uint64_t last_transition_time{0};
 
     vector<Node*> inputs;
     vector<Node*> outputs;

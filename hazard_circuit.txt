@@ -1,0 +1,13 @@
+# Classic Static-1 Hazard Circuit
+# F = (A AND B) OR ((NOT A) AND C)
+# When B=1, C=1, and A switches from 1 -> 0, F should remain 1.
+# But because NOT gate takes 1ns delay, F dips to 0 for 1ns!
+
+INPUT A B C
+
+NOT NOT_A A
+AND G1 A B
+AND G2 NOT_A C
+OR F G1 G2
+
+OUTPUT F
