@@ -6,13 +6,83 @@ $version
 $end
 $timescale 1ns $end
 $scope module top $end
-$var wire 1 ! F $end
-$var wire 1 " G2 $end
-$var wire 1 # G1 $end
-$var wire 1 $ NOT_A $end
-$var wire 1 % B $end
-$var wire 1 & C $end
-$var wire 1 ' A $end
+$var wire 1 ! OUT3_B $end
+$var wire 1 " MUX3_3 $end
+$var wire 1 # MUX3_2 $end
+$var wire 1 $ MUX3_1 $end
+$var wire 1 % COUT $end
+$var wire 1 & C3_2 $end
+$var wire 1 ' C3_1 $end
+$var wire 1 ( SUM3_INT $end
+$var wire 1 ) XOR3 $end
+$var wire 1 * OR3 $end
+$var wire 1 + ALU_OUT[2] $end
+$var wire 1 , C0_1 $end
+$var wire 1 - ALU_OUT[3] $end
+$var wire 1 . C0_2 $end
+$var wire 1 / ADD0 $end
+$var wire 1 0 DEC1 $end
+$var wire 1 1 DEC2 $end
+$var wire 1 2 NOT_OP0 $end
+$var wire 1 3 MUX0_0 $end
+$var wire 1 4 OUT1_B $end
+$var wire 1 5 SUM0_INT $end
+$var wire 1 6 B[1] $end
+$var wire 1 7 B[0] $end
+$var wire 1 8 AND3 $end
+$var wire 1 9 ALU_OUT[1] $end
+$var wire 1 : XOR0 $end
+$var wire 1 ; MUX1_1 $end
+$var wire 1 < C2 $end
+$var wire 1 = AND0 $end
+$var wire 1 > CIN $end
+$var wire 1 ? A[1] $end
+$var wire 1 @ OUT2_A $end
+$var wire 1 A OR0 $end
+$var wire 1 B A[0] $end
+$var wire 1 C A[2] $end
+$var wire 1 D B[3] $end
+$var wire 1 E OP[0] $end
+$var wire 1 F XOR2 $end
+$var wire 1 G ADD3 $end
+$var wire 1 H OUT0_B $end
+$var wire 1 I MUX0_1 $end
+$var wire 1 J MUX3_0 $end
+$var wire 1 K OP[1] $end
+$var wire 1 L B[2] $end
+$var wire 1 M C2_2 $end
+$var wire 1 N MUX0_2 $end
+$var wire 1 O C2_1 $end
+$var wire 1 P ALU_OUT[0] $end
+$var wire 1 Q MUX0_3 $end
+$var wire 1 R AND2 $end
+$var wire 1 S AND1 $end
+$var wire 1 T NOT_OP1 $end
+$var wire 1 U XOR1 $end
+$var wire 1 V OUT2_B $end
+$var wire 1 W OR1 $end
+$var wire 1 X DEC0 $end
+$var wire 1 Y A[3] $end
+$var wire 1 Z SUM1_INT $end
+$var wire 1 [ C1 $end
+$var wire 1 \ ADD2 $end
+$var wire 1 ] MUX1_3 $end
+$var wire 1 ^ ADD1 $end
+$var wire 1 _ C1_1 $end
+$var wire 1 ` C1_2 $end
+$var wire 1 a OUT1_A $end
+$var wire 1 b C0 $end
+$var wire 1 c DEC3 $end
+$var wire 1 d MUX1_0 $end
+$var wire 1 e MUX1_2 $end
+$var wire 1 f OR2 $end
+$var wire 1 g SUM2_INT $end
+$var wire 1 h MUX2_0 $end
+$var wire 1 i OUT3_A $end
+$var wire 1 j MUX2_1 $end
+$var wire 1 k MUX2_2 $end
+$var wire 1 l OUT0_A $end
+$var wire 1 m MUX2_3 $end
 $upscope $end
 $enddefinitions $end
 $dumpvars
@@ -23,35 +93,364 @@ $dumpvars
 0% 
 0& 
 0' 
+0( 
+0) 
+0* 
+0+ 
+0, 
+0- 
+0. 
+0/ 
+00 
+01 
+02 
+03 
+04 
+05 
+06 
+07 
+08 
+09 
+0: 
+0; 
+0< 
+0= 
+0> 
+0? 
+0@ 
+0A 
+0B 
+0C 
+0D 
+0E 
+0F 
+0G 
+0H 
+0I 
+0J 
+0K 
+0L 
+0M 
+0N 
+0O 
+0P 
+0Q 
+0R 
+0S 
+0T 
+0U 
+0V 
+0W 
+0X 
+0Y 
+0Z 
+0[ 
+0\ 
+0] 
+0^ 
+0_ 
+0` 
+0a 
+0b 
+0c 
+0d 
+0e 
+0f 
+0g 
+0h 
+0i 
+0j 
+0k 
+0l 
+0m 
 $end
 #0
+1?
+
+1Y
+
+1D
+
+1L
+
+#2
+1W
+
+1*
+
+18
+
 1'
+
+1f
+
+#3
+1U
+
+1Z
+
+1(
+
+1F
+
+0(
+
+1g
+
+1)
+
+#4
+1%
+
+#6
+1\
+
+1^
+
+1G
+
+#30
+1E
+
+#60
+0E
+
+1K
+
+#61
+12
+
+#63
+11
+
+#65
+1e
+
+1k
+
+1#
+
+#67
+14
+
+1V
+
+1!
+
+#69
+19
+
+1+
+
+1-
+
+#90
+1E
+
+17
+
+1C
+
+0D
+
+0Y
+
+1B
+
+#91
+02
+
+#92
+1c
+
+1,
+
+0'
+
+1=
+
+0*
+
+1O
+
+08
+
+1A
+
+1R
+
+#93
+01
+
+0)
+
+1(
+
+15
+
+0F
+
+0g
+
+1:
+
+#94
+1m
+
+1]
+
+1b
+
+1"
+
+0%
+
+1<
+
+#95
+0#
+
+0k
+
+0e
+
+#96
+0\
+
+1/
+
+1`
 
 1&
 
+#97
+0G
+
+0^
+
+#98
+1[
+
+0m
+
+1Q
+
 1%
 
-#2
-1#
+#99
+0"
 
-#4
-1!
+0]
 
-#10
-0'
+#100
+0V
 
-#11
-1$
+1H
 
-#12
-0#
+#101
+1\
 
-#13
-1"
-
-#14
 0!
 
-#15
-1!
+04
+
+#102
+0+
+
+1P
+
+#103
+0-
+
+09
+
+1m
+
+#105
+1V
+
+#107
+1+
+
+#120
+1Y
+
+16
+
+0?
+
+0B
+
+07
+
+#122
+1_
+
+0_
+
+0=
+
+1S
+
+1*
+
+0,
+
+0A
+
+#123
+1)
+
+0Z
+
+0U
+
+1Z
+
+05
+
+0:
+
+#124
+0b
+
+#125
+0`
+
+1`
+
+#126
+0/
+
+0`
+
+1^
+
+#127
+0[
+
+#128
+0Q
+
+1]
+
+#130
+0\
+
+0H
+
+14
+
+#132
+0m
+
+0P
+
+19
+
+#134
+0V
+
+#136
+0+
 

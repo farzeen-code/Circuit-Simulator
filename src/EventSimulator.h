@@ -146,10 +146,13 @@ class EventSimulator{
 
                 event_queue.pop();
                 curr_t = ev.timestamp;
+
+                pending_values[ev.target] = ev.new_value;
+                
                 if(ev.target->value != ev.new_value){
                     uint64_t duration = curr_t - ev.target->last_transition_time;
 
-                    if(ev.target->last_transition_time > 0 && duration <= glitch_threshold){
+                    if(ev.target->last_transition_time > 0 && duration > 0 && duration <= glitch_threshold){
                         detected_glitches.push_back({ev.target->name, curr_t, duration, ev.new_value});
                         cout<<"[!] Hazard Glitch detected on '"<<ev.target->name
                             <<"' at T: "<<curr_t<<" ns (Pulse width: "<<duration<<" ns)\n";

@@ -6,6 +6,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <regex>
 #include "Node.h"
 #include "MemoryPool.h"
 #include "GraphEngine.h"
@@ -81,11 +82,12 @@ private:
         }
     }
 
-    Node *get_or_create_node(string &name, GateType type, uint64_t delay = 1)
+    Node *get_or_create_node(const string &name, GateType type, uint64_t delay = 1)
     {
         auto it = node_map.find(name);
         if (it != node_map.end())
         {
+            if(type == GateType::OUTPUT) return it->second;
             it->second->type = type;
             it->second->propagation_delay = delay;
             return it->second;
@@ -96,6 +98,32 @@ private:
         circuit.addNode(node);
         node_map[name] = node;
         return node;
+    }
+
+    vector<string> expand_bus_token(const string& token){
+        regex bus_regex(R"(^([a-zA-Z0-9_]+)\[(\d+):(\d+)\]$)");
+        smatch match;
+
+        if(regex_match(token, match, bus_regex)){
+            string prefix = match[1].str();
+            int msb = stoi(match[2].str());
+            int lsb = stoi(match[3].str());
+
+            vector<string> expanded;
+            if(msb >= lsb){
+                for(int i = msb; i>=lsb; i--){
+                    expanded.push_back(prefix + "[" + to_string(i) + "]");
+                }
+                
+            }
+            else{
+                for(int i=msb; i<=lsb; i++){
+                    expanded.push_back(prefix + "[" + to_string(i) + "]");
+                }
+            }
+            return expanded;
+        }
+        return {token};
     }
 
 public:
@@ -124,24 +152,50 @@ public:
             string command = first_token;
             transform(command.begin(), command.end(), command.begin(), ::toupper);
 
-            if (command == "INPUT" || command == "CLOCK")
+            if(command == "BUS"){
+                string bus_dir;
+                if(!(ss >> bus_dir)) continue;
+                transform(bus_dir.begin(), bus_dir.end(), bus_dir.begin(), ::toupper);
+                GateType bus_type = (bus_dir == "INPUT") ? GateType::INPUT : GateType::OUTPUT;
+
+                string bus_token;
+                while(ss >> bus_token){
+                    for(const auto& pin_name : expand_bus_token(bus_token)){
+                        if(bus_type == GateType::OUTPUT){
+                            if(node_map.find(pin_name) == node_map.end()){
+                                get_or_create_node(pin_name, GateType::OUTPUT, 0);
+                            }
+                        }
+                        else{
+                            get_or_create_node(pin_name, GateType::INPUT, 0);
+                        }
+                    }
+                }
+            }
+
+            else if (command == "INPUT" || command == "CLOCK")
             {
                 GateType in_type = (command == "CLOCK") ? GateType::CLOCK : GateType::INPUT;
-                string input_name;
-                while (ss >> input_name)
+                string input_token;
+                while (ss >> input_token)
                 {
-                    get_or_create_node(input_name, in_type, 0);
+                    for(const auto& pin_name : expand_bus_token(input_token)){
+                        get_or_create_node(pin_name, in_type, 0);
+                    }
                 }
             }
             else if (command == "OUTPUT")
             {
-                string out_name;
-                while (ss >> out_name)
+                string out_token;
+                while (ss >> out_token)
                 {
-                    if (node_map.find(out_name) == node_map.end())
-                    {
-                        cerr << "Error: Output pin " << out_name << " declared before definition." << endl;
+                    for(const auto& pin_name : expand_bus_token(out_token)){
+                        if (node_map.find(pin_name) == node_map.end())
+                        {
+                            get_or_create_node(pin_name, GateType::OUTPUT, 0);
+                        }
                     }
+                    
                 }
             }
             else
@@ -183,17 +237,18 @@ public:
         return true;
     }
 
-    void set_inputs(const string &name, bool val)
+    void set_bus_value(const string& bus_name, int msb, int lsb, uint64_t val)
     {
-        auto it = node_map.find(name);
-        if (it != node_map.end() && it->second->type == GateType::INPUT)
-        {
-            it->second->value = val;
-        }
-        else
-        {
-            cerr << "Error: Unknown input pin " << name << endl
-                 << endl;
+        int step = (msb >= lsb) ? 1 : -1;
+        int idx = 0;
+        for(int i = lsb; lsb+=step; ++idx){
+            string pin_name = bus_name + "[" + to_string(i) + "]";
+            auto it = node_map.find(pin_name);
+            if(it != node_map.end()){
+                it->second->value = (val >> idx) & 1;
+            }
+
+            if(i == msb) break;
         }
     }
 

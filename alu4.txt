@@ -1,0 +1,108 @@
+# 4-Bit Arithmetic Logic Unit (ALU)
+# Inputs: A[3:0], B[3:0], OP[1:0]
+# Operations:
+#   OP=00 -> Bitwise AND
+#   OP=01 -> Bitwise OR
+#   OP=10 -> Bitwise XOR
+#   OP=11 -> Addition (A + B + Cin)
+
+BUS INPUT A[3:0] B[3:0] OP[1:0]
+INPUT CIN
+
+# Invert Opcode bits for decoder
+NOT NOT_OP1 OP[1]
+NOT NOT_OP0 OP[0]
+
+# Opcode One-Hot Decoder
+# DEC0 = AND mode (00), DEC1 = OR mode (01), DEC2 = XOR mode (10), DEC3 = ADD mode (11)
+AND DEC0 NOT_OP1 NOT_OP0
+AND DEC1 NOT_OP1 OP[0]
+AND DEC2 OP[1] NOT_OP0
+AND DEC3 OP[1] OP[0]
+
+# ================= BIT 0 =================
+AND AND0 A[0] B[0]
+OR  OR0  A[0] B[0]
+XOR XOR0 A[0] B[0]
+
+# Bit 0 Full Adder
+XOR SUM0_INT A[0] B[0]
+XOR ADD0 SUM0_INT CIN
+AND C0_1 A[0] B[0]
+AND C0_2 SUM0_INT CIN
+OR  C0   C0_1 C0_2
+
+# Bit 0 Mux Selection
+AND MUX0_0 AND0 DEC0
+AND MUX0_1 OR0  DEC1
+AND MUX0_2 XOR0 DEC2
+AND MUX0_3 ADD0 DEC3
+OR  OUT0_A MUX0_0 MUX0_1
+OR  OUT0_B MUX0_2 MUX0_3
+OR  ALU_OUT[0] OUT0_A OUT0_B
+
+# ================= BIT 1 =================
+AND AND1 A[1] B[1]
+OR  OR1  A[1] B[1]
+XOR XOR1 A[1] B[1]
+
+# Bit 1 Full Adder
+XOR SUM1_INT A[1] B[1]
+XOR ADD1 SUM1_INT C0
+AND C1_1 A[1] B[1]
+AND C1_2 SUM1_INT C0
+OR  C1   C1_1 C1_2
+
+# Bit 1 Mux Selection
+AND MUX1_0 AND1 DEC0
+AND MUX1_1 OR1  DEC1
+AND MUX1_2 XOR1 DEC2
+AND MUX1_3 ADD1 DEC3
+OR  OUT1_A MUX1_0 MUX1_1
+OR  OUT1_B MUX1_2 MUX1_3
+OR  ALU_OUT[1] OUT1_A OUT1_B
+
+# ================= BIT 2 =================
+AND AND2 A[2] B[2]
+OR  OR2  A[2] B[2]
+XOR XOR2 A[2] B[2]
+
+# Bit 2 Full Adder
+XOR SUM2_INT A[2] B[2]
+XOR ADD2 SUM2_INT C1
+AND C2_1 A[2] B[2]
+AND C2_2 SUM2_INT C1
+OR  C2   C2_1 C2_2
+
+# Bit 2 Mux Selection
+AND MUX2_0 AND2 DEC0
+AND MUX2_1 OR2  DEC1
+AND MUX2_2 XOR2 DEC2
+AND MUX2_3 ADD2 DEC3
+OR  OUT2_A MUX2_0 MUX2_1
+OR  OUT2_B MUX2_2 MUX2_3
+OR  ALU_OUT[2] OUT2_A OUT2_B
+
+# ================= BIT 3 =================
+AND AND3 A[3] B[3]
+OR  OR3  A[3] B[3]
+XOR XOR3 A[3] B[3]
+
+# Bit 3 Full Adder
+XOR SUM3_INT A[3] B[3]
+XOR ADD3 SUM3_INT C2
+AND C3_1 A[3] B[3]
+AND C3_2 SUM3_INT C2
+OR  COUT C3_1 C3_2
+
+# Bit 3 Mux Selection
+AND MUX3_0 AND3 DEC0
+AND MUX3_1 OR3  DEC1
+AND MUX3_2 XOR3 DEC2
+AND MUX3_3 ADD3 DEC3
+OR  OUT3_A MUX3_0 MUX3_1
+OR  OUT3_B MUX3_2 MUX3_3
+OR  ALU_OUT[3] OUT3_A OUT3_B
+
+BUS OUTPUT ALU_OUT[3:0]
+OUTPUT COUT
