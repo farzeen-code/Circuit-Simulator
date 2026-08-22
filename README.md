@@ -1,4 +1,3 @@
-```markdown
 # Event-Driven Logic Circuit Simulator (DES Engine)
 
 A high-performance, cycle-accurate digital logic simulation engine implemented in modern C++ (C++17). The engine parses textual netlist descriptions, constructs an in-memory Directed Acyclic Graph (DAG) using a custom fixed-block memory pool allocator, simulates sub-nanosecond signal propagation delays using a discrete-event priority queue, detects electrical timing hazards/glitches, and exports IEEE 1364 Value Change Dump (`.vcd`) waveforms for digital logic analyzers.
