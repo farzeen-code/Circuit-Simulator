@@ -108,6 +108,8 @@ OUTPUT SUM COUT
 
 #### Full Adder Waveform Simulation:
 
+<img width="1755" height="424" alt="Screenshot 2026-08-18 221700" src="https://github.com/user-attachments/assets/51b94a7e-89e8-4a75-895d-2abcdb0bfd59" />
+
 ---
 
 ### 2. Sequential Logic: 1-Bit D Flip-Flop Memory Register
@@ -136,6 +138,7 @@ OUTPUT Q
 
 #### D Flip-Flop Waveform Simulation:
 
+<img width="1851" height="823" alt="Screenshot 2026-08-18 230549" src="https://github.com/user-attachments/assets/c498a5ba-302f-46da-bb73-68f9920bf0c7" />
 ---
 
 ### 3. Timing Hazards: Asymmetric Path Glitch Circuit
